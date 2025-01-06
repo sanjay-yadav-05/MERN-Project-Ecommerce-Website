@@ -40,7 +40,7 @@ const Header = () => {
   return (
     <header className="fixed top-0 w-full bg-black text-white  shadow-xl shadow-gray-500  md:shadow-gray-500 z-10">
       {/* Desktop Navigation */}
-      <div className="hidden md:flex justify-between items-center h-[8vh] pl-6">
+      <div className="hidden md:flex justify-between items-center h-[8vh] px-6">
         <NavLink to="/" className="text-3xl w-2/5">BrandName</NavLink>
         <nav className="flex gap-6 w-1/5 justify-center items-center h-full">
           <NavLink to="/" className={navLinkStyles}>Home</NavLink>
@@ -50,14 +50,16 @@ const Header = () => {
         {auth.user ? (
           <div className="flex gap-4 bg-black items-center w-2/5 justify-end relative">
             {/* Profile Section */}
+            <div className='overflow-hidden'>  
             <div className={`flex gap-2 h-full z-40 ease-in-out cursor-pointer duration-500 ${isDropdownOpen? "translate-x-0" : "translate-x-[200%]"}`}>
               <NavLink to={`/dashboard/${auth.user.role === 1 ? "admin" : "user/profile"}`} className="hover:bg-gray-800 px-2 rounded-l-lg py-2" onClick={closeDropdown} >
                 Dashboard
               </NavLink>
               <div className="hover:bg-gray-800 px-2 rounded-r-lg py-2" onClick={() => { closeDropdown(); handleLogout(); }} > Logout
               </div>
+            </div>
               </div>
-              <div className='flex gap-4 items-center justify-end z-50  bg-black h-full pr-6'>
+              <div className='flex gap-4 items-center justify-end z-50  bg-black h-full '>
               <div onClick={toggleDropdown} className="border-l-2 border-gray-700 px-1 flex items-center justify-center gap-2" >
                 <img className="h-9 invert " src={ProfileIcon} alt="Profile" />
                 <div className='text-lg'>{auth.user.name}</div>
@@ -67,7 +69,7 @@ const Header = () => {
               </NavLink>}
             </div>
           </div>
-        ) : (<div className="flex gap-4 w-1/5 justify-end pr-6">
+        ) : (<div className="flex gap-4 w-2/5 justify-end ">
           <NavLink to="/login" state={{ from: location.pathname }} className={navLinkaccStyles}>Login</NavLink>
           <NavLink to="/register" state={{ from: location.pathname }} className={navLinkaccStyles}>Sign Up</NavLink>
         </div>)}
