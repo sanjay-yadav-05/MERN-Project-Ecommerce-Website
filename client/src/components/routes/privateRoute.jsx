@@ -34,7 +34,7 @@ const PrivateRoute = () => {
     }
   }, [auth?.token]);
 
-  return ok ? <Outlet /> : <Spinner page = {"login"} />;
+  return ok ? <Outlet /> : <Spinner  />;
 };
 
 export default PrivateRoute;

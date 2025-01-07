@@ -11,7 +11,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 
 const SignUp = () => {
-  const { register, handleSubmit, formState: { errors, isSubmitting, isValid }, watch, trigger } = useForm();
+  const { register, handleSubmit, formState: { errors, isSubmitting, isValid }, watch, trigger,reset } = useForm();
   const { auth, setAuth } = useAuth();
   const [step, setStep] = useState(1);
   const name = watch("name");
@@ -51,6 +51,7 @@ const SignUp = () => {
         setTimeout(() => {
           navigate(gotoLastSite); // Redirect to the last visited page
         }, 1000);
+        reset();
       }
       else {
         toast.error(res.data.message);
@@ -202,7 +203,7 @@ const SignUp = () => {
                     disabled={isSubmitting}
                     className="font-bold text-lg"
                     type="submit"
-                    value="Sign Up"
+                    value={isSubmitting ? 'Registering...' : 'Sign Up'}
                   />
                 </div>
               </div>

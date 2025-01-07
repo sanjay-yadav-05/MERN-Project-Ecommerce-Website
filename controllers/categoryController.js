@@ -88,7 +88,7 @@ export const updateCategoryController = async (req, res) => {
 
 export const getAllCategoryController = async (req, res) => {
     try {
-        const categories = await categoryModel.find({});
+        const categories = await categoryModel.find({}).sort({ createdAt: -1 });
         if (!categories) {
             return res.status(404).send({
                 success: false,

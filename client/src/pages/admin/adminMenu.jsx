@@ -10,8 +10,8 @@ const adminMenu = () => {
                 Admin Dashboard
             </NavLink>
             <div className='flex flex-col gap-2  w-full items-center'>
-                <NavLink className={navLinkStyles} to="/dashboard/admin/create-category">Create-category</NavLink>
-                <NavLink className={navLinkStyles} to="/dashboard/admin/create-product">Create-product</NavLink>
+                <NavLink className={navLinkStyles} to="/dashboard/admin/create-category">Manage-category</NavLink>
+                <NavLink className={navLinkStyles} to="/dashboard/admin/create-product">Manage-product</NavLink>
                 <NavLink className={navLinkStyles} to="/dashboard/admin/all-users">All-users</NavLink>
             </div>
         </div>

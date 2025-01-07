@@ -45,7 +45,7 @@ const AdminRoute = () => {
     }
   }, [auth?.token]);
 
-  return ok ? <Outlet /> : <Spinner page={"home"} />;
+  return ok ? <Outlet /> : <Spinner/>;
 };
 
 export default AdminRoute;
