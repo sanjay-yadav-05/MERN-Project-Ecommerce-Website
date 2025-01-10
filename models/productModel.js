@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema(
         slug: {
             type: String,
             required: true,
-            // unique: true,
+            unique: true, // Uncomment this if you want slugs to be unique
         },
         description: {
             type: String,

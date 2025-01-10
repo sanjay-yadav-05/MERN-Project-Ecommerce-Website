@@ -60,7 +60,7 @@ const Header = () => {
             </div>
               </div>
               <div className='flex gap-4 items-center justify-end z-50  bg-black h-full '>
-              <div onClick={toggleDropdown} className="border-l-2 border-gray-700 px-1 flex items-center justify-center gap-2" >
+              <div onClick={toggleDropdown} className="border-l-2 cursor-pointer border-gray-700 px-1 flex items-center justify-center gap-2" >
                 <img className="h-9 invert " src={ProfileIcon} alt="Profile" />
                 <div className='text-lg'>{auth.user.name}</div>
               </div>

@@ -150,22 +150,22 @@ const CreateCategory = () => {
                     </div>
 
                     {/* Categories Table */}
-                    <div className="overflow-auto border border-gray-400 border-collapse">
+                    <div className="overflow-auto border-2 border-gray-800 border-collapse">
                         {loading ? (
                             <div>Loading categories...</div>
                         ) : (
-                            <table className="w-full border-collapse border border-gray-400 ">
+                            <table className="w-full border-collapse border border-gray-800 ">
                                 <thead className="sticky top-0 bg-white w-full">
                                     <tr>
-                                        <th className="border border-gray-400 p-2 text-center w-2/3">Categories</th>
-                                        <th className="border border-gray-400 p-2 text-center w-1/3">Actions</th>
+                                        <th className="border border-gray-800 p-2 text-center w-2/3">Categories</th>
+                                        <th className="border border-gray-800 p-2 text-center w-1/3">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody className='w-full'>
+                                <tbody className='w-full '>
                                     {categories.map((category) => (
                                         <tr key={category._id} className='w-full'>
-                                            <td className="border border-gray-400 px-3 py-2 w-2/3">{category.name}</td>
-                                            <td className="border border-gray-400 px-3 py-2 flex justify-around w-full">
+                                            <td className="border  border-gray-800 px-3 py-2 w-2/3">{category.name}</td>
+                                            <td className="border  border-gray-800 px-3 py-2 flex justify-around w-full">
                                                 <button
                                                     onClick={() => openModal(category)}
                                                     className="text-blue-500 hover:font-bold w-full"

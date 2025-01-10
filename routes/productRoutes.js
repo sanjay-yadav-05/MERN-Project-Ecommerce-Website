@@ -6,7 +6,7 @@ import {createProductController, deleteProductController, getAllProductsControll
 
 const router = express.Router();
 
-router.post("/create-product",requireSignIn,isAdmin,formidable(),createProductController);
+router.post("/create-product",requireSignIn,isAdmin,formidable({ multiples: false }),createProductController);
 router.put("/update-product/:pid",requireSignIn,isAdmin,formidable(),updateProductController);
 router.get("/get-products",getAllProductsController);
 router.get("/get-product/:slug",getProductController);
