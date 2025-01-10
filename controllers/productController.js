@@ -83,7 +83,8 @@ export const updateProductController = async (req, res) => {
     try {
         const { name, description, price, quantity, category, shipping } = req.fields;
         const { image } = req.files;
-
+        const { pid } = req.params;
+        console.log(pid)
         // Validation
         if (!name) return res.status(400).send({ message: "Name is required" });
         if (!description) return res.status(400).send({ message: "Description is required" });
@@ -92,7 +93,7 @@ export const updateProductController = async (req, res) => {
         if (!category) return res.status(400).send({ message: "Category is required" });
 
         // Find the product to update
-        const product = await productModel.findById(req.params.id);
+        const product = await productModel.findById(pid);
         if (!product) {
             return res.status(404).send({
                 success: false,
