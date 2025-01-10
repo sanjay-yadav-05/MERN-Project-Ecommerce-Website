@@ -21,7 +21,7 @@ const SignUp = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const gotoLastSite = location.state?.from?.endsWith('/login') || location.state?.from?.endsWith('/register')
+  const gotoLastSite = location.state?.from?.endsWith('login') || location.state?.from?.endsWith('register')
   ? "/"
   : (location.state?.from || "/");
   const handleNext = async () => {
