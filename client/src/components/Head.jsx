@@ -48,10 +48,10 @@ const Header = () => {
 
         </nav>
         {auth.user ? (
-          <div className="flex gap-4 bg-black items-center w-2/5 justify-end relative">
+          <div className="flex gap-4 h-full bg-black items-center w-2/5 justify-end ">
             {/* Profile Section */}
-            <div className='overflow-hidden'>  
-            <div className={`flex gap-2 h-full z-40 ease-in-out cursor-pointer duration-500 ${isDropdownOpen? "translate-x-0" : "translate-x-[200%]"}`}>
+            <div className='overflow-hidden h-full'>  
+            <div className={`flex gap-2 h-full z-40 items-center ease-in-out cursor-pointer duration-500 ${isDropdownOpen? "translate-x-0" : "translate-x-[200%]"}`}>
               <NavLink to={`/dashboard/${auth.user.role === 1 ? "admin" : "user/profile"}`} className="hover:bg-gray-800 px-2 rounded-l-lg py-2" onClick={closeDropdown} >
                 Dashboard
               </NavLink>

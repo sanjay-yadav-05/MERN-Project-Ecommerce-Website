@@ -23,7 +23,7 @@ const Login = () => {
       const res = await axios.post('http://localhost:8080/api/v1/auth/login', data);
       
       if (res.data.success) {
-        toast.success(res.data.message);
+        toast.success(`${res.data.user.name} logged in successfully`);
         const updatedAuth = { ...auth, user: res.data.user, token: res.data.token };
         setAuth(updatedAuth);
         localStorage.setItem("auth", JSON.stringify(updatedAuth));
