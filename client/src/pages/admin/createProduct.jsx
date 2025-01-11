@@ -454,7 +454,7 @@ const CreateProduct = () => {
                                             type="file"
                                             className="w-full h-10 border-2 border-black rounded-md"
                                             accept="image/*"
-                                            {...register('image', { required: 'Image is required' })}
+                                            {...register('image')}
                                             onChange={(e) => {
                                                 handleFilePreview(e); // Update photo state for preview
                                             }}
