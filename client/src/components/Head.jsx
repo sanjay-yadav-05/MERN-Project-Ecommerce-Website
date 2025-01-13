@@ -5,9 +5,12 @@ import ProfileIcon from '../assets/svg/profile.svg';
 import menuIcon from '../assets/svg/menu.svg';
 import { useAuth } from '../context/authContext';
 import { useNavigate } from "react-router-dom";
-
+import { toast } from 'react-toastify';
+import SearchbarATHome from './searchbarATHome';
+// import { useToast } from '../context/toastContext';
 
 const Header = () => {
+  // const { showToast } = useToast();
   const [menuOpen, setMenuOpen] = useState(false);
   const { auth, setAuth } = useAuth();
 
@@ -20,11 +23,14 @@ const Header = () => {
   const navLinkStyles = ({ isActive }) =>
     isActive ? 'h-3/6 items-center flex border-b-2 border-gray-400 z-50 ' : 'h-3/6 items-center flex border-b-2  border-black z-50';
   const handleLogout = () => {
+    toast.success("Loged out successfully");
+    // showToast("Loged out successfully")
     setAuth({ ...auth, user: null, token: "" });
     localStorage.removeItem("auth");
     navigate("/login")
   }
 
+  const ishome =  ( location?.pathname  == "/" || location?.pathname  == "/search") ;
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -41,14 +47,14 @@ const Header = () => {
     <header className="fixed top-0 w-full bg-black text-white  shadow-xl shadow-gray-500  md:shadow-gray-500 z-10">
       {/* Desktop Navigation */}
       <div className="hidden md:flex justify-between items-center h-[8vh] px-6">
-        <NavLink to="/" className="text-3xl w-2/5">BrandName</NavLink>
-        <nav className="flex gap-6 w-1/5 justify-center items-center h-full">
-          <NavLink to="/" className={navLinkStyles}>Home</NavLink>
-          <NavLink to="/category" className={navLinkStyles}>Category</NavLink>
-
-        </nav>
+        <NavLink to="/" className="text-3xl w-[32%]">BrandName</NavLink>
+        {ishome && <nav className="flex gap-6 w-[36%] py-2.5 px-2 justify-center items-center h-full">
+          {/* <NavLink to="/" className={navLinkStyles}>Home</NavLink>
+          <NavLink to="/category" className={navLinkStyles}>Category</NavLink> */}
+          <SearchbarATHome/>
+        </nav>}
         {auth.user ? (
-          <div className="flex gap-4 h-full bg-black items-center w-2/5 justify-end ">
+          <div className="flex gap-4 h-full bg-black items-center w-[32%] justify-end ">
             {/* Profile Section */}
             <div className='overflow-hidden h-full'>  
             <div className={`flex gap-2 h-full z-40 items-center ease-in-out cursor-pointer duration-500 ${isDropdownOpen? "translate-x-0" : "translate-x-[200%]"}`}>

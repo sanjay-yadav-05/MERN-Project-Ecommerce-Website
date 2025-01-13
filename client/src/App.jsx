@@ -18,11 +18,13 @@ import CreateProduct from './pages/admin/createProduct';
 import AllUsersInfo from './pages/admin/allUsersInfo';
 import Cart from './pages/users/cart';
 import AllOrders from './pages/users/allOrders';
+// import SearchResultPage from './pages/searchResultPage';
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      {/* <Route path="/search" element={<SearchResultPage/>} /> */}
       <Route path="/login" element={<Login />} />
       <Route path="/forgetPassword" element={<ForgetPassword />} />
       <Route path="/register" element={<Singup />} />

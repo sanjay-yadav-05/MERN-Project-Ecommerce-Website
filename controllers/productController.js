@@ -30,7 +30,7 @@ export const createProductController = async (req, res) => {
         if (!price || price <= 0) return res.status(400).send({ message: "Price must be greater than 0" });
         if (quantity < 0) return res.status(400).send({ message: "Quantity must be 0 or more" });
         if (!category) return res.status(400).send({ message: "Category is required" });
-        if (!image ) return res.status(400).send({ message: "Image is required" });
+        if (!image) return res.status(400).send({ message: "Image is required" });
         if (!["image/jpeg", "image/png", "image/gif"].includes(image.type)) {
             return res.status(400).send({ message: "Invalid image format" });
         }
@@ -237,6 +237,32 @@ export const deleteProductController = async (req, res) => {
         res.status(500).send({
             success: false,
             message: "Error in deleting product",
+            error,
+        });
+    }
+};
+
+
+export const searchProductController = async (req, res) => {
+    try {
+        const { keyword } = req.params; // Use req.query for search keyword
+        const result = await productModel.find({
+            $or: [
+                { name: { $regex: keyword, $options: "i" } },
+                { description: { $regex: keyword, $options: "i" } },
+            ],
+        }).select("-image");
+        
+        res.status(200).send({
+            success: true,
+            message: "Products fetched successfully",
+            data: result,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({
+            success: false,
+            message: "Error in searching product",
             error,
         });
     }
