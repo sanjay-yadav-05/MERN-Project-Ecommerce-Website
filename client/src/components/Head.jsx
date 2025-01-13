@@ -44,10 +44,10 @@ const Header = () => {
 
 
   return (
-    <header className="fixed top-0 w-full bg-black text-white  shadow-xl shadow-gray-500  md:shadow-gray-500 z-10">
+    <header className="fixed top-0 w-full bg-black text-white   shadow-gray-500  md:shadow-gray-500 z-10">
       {/* Desktop Navigation */}
       <div className="hidden md:flex justify-between items-center h-[8vh] px-6">
-        <NavLink to="/" className="text-3xl w-[32%]">BrandName</NavLink>
+        <NavLink to="/" className="text-4xl w-[32%] font-mono">BrandName</NavLink>
         {ishome && <nav className="flex gap-6 w-[36%] py-2.5 px-2 justify-center items-center h-full">
           {/* <NavLink to="/" className={navLinkStyles}>Home</NavLink>
           <NavLink to="/category" className={navLinkStyles}>Category</NavLink> */}
@@ -68,7 +68,7 @@ const Header = () => {
               <div className='flex gap-4 items-center justify-end z-50  bg-black h-full '>
               <div onClick={toggleDropdown} className="border-l-2 cursor-pointer border-gray-700 px-1 flex items-center justify-center gap-2" >
                 <img className="h-9 invert " src={ProfileIcon} alt="Profile" />
-                <div className='text-lg'>{auth.user.name}</div>
+                <div className='text-xl font-mono'>{auth.user.name}</div>
               </div>
              {auth?.user?.role == 0 && <NavLink to="/dashboard/user/cart" className={navLinkStyles}>
                 Cart(0)

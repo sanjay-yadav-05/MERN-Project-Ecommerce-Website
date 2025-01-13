@@ -171,7 +171,8 @@ export const getAllProductsController = async (req, res) => {
 export const getProductController = async (req, res) => {
     try {
         const { slug } = req.params;
-        const product = await productModel.findOne({ slug }).select("-image").populate("category");
+        const product = await productModel.findOne({ slug }).populate("category");
+        // const product = await productModel.findOne({ slug }).select("-image").populate("category");
         if (!product) {
             return res.status(404).send({
                 success: false,
@@ -251,7 +252,7 @@ export const searchProductController = async (req, res) => {
                 { name: { $regex: keyword, $options: "i" } },
                 { description: { $regex: keyword, $options: "i" } },
             ],
-        }).select("-image");
+        }).select("-image").populate("category");
         
         res.status(200).send({
             success: true,
@@ -265,5 +266,23 @@ export const searchProductController = async (req, res) => {
             message: "Error in searching product",
             error,
         });
+    }
+};
+
+
+
+export const getSimilarProduct = async(req,res)=>{
+    const { categoryId } = req.params;
+    const { exclude } = req.query; // The product ID to exclude
+
+    try {
+        const products = await productModel.find({
+            category: categoryId,
+            _id: { $ne: exclude }, // Exclude the current product
+        });
+
+        res.status(200).json({ products });
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching similar products', error });
     }
 };
