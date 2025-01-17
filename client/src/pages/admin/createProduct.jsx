@@ -233,11 +233,11 @@ const CreateProduct = () => {
 
     return (
         <Layout>
-            <div className='px-4 py-3 h-full flex gap-2'>
+            <div className='px-4 py-3 h-full flex gap-4'>
                 {/* Left section */}
                 <AdminMenu />
                 {/* Right section */}
-                <div className='w-5/6 border-2 p-4 box-border border-black flex flex-col gap-3'>
+                <div className='w-4/5 border-2 p-4 box-border border-gray-300 rounded-lg bg-white flex flex-col gap-3'>
                     <h1 className="text-4xl flex justify-center font-bold">Manage Products</h1>
                     <div><button className='bg-black text-white px-4 py-2 rounded-lg' onClick={openAddForm}>Add Product</button></div>
 
@@ -552,7 +552,7 @@ const CreateProduct = () => {
                         {loading ? (
                             <div>Loading categories...</div>
                         ) : (
-                            <table className="w-full border-collapse border h-full border-gray-800">
+                            <table className="w-full border-collapse  border h-full border-gray-800">
                                 <thead className="sticky top-0 bg-white w-full">
                                     <tr>
                                         <th className="border border-gray-800 p-2 text-center w-1/4">Products</th>
@@ -560,7 +560,7 @@ const CreateProduct = () => {
                                         <th className="border border-gray-800 p-2 text-center w-1/4">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody >
                                     {products.map((product) => (
                                         <tr key={product._id} className='border h-full border-gray-800 items-center justify-center'>
                                             <td className=" text-wrap px-3 py-2 w-1/4">{product.name}</td>

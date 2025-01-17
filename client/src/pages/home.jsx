@@ -109,9 +109,9 @@ const Home = () => {
       } else {
         // Add product to cart with only required fields
         const { _id, name, description, price, quantity } = product;
-        setCart([...cart, { _id, name, description, price, quantity:1 }]);
+        setCart([{ _id, name, description, price, quantity:1 },...cart ]);
         toast.success(`${product.name} is added to cart`);
-        localStorage.setItem("cart", JSON.stringify([...cart, { _id, name, description, price, quantity:1 }]))
+        localStorage.setItem("cart", JSON.stringify([{ _id, name, description, price, quantity:1 },...cart ]))
         // localStorage.setItem("cart", JSON.stringify([...cart, product]))
       }
     }else{
@@ -123,15 +123,15 @@ const Home = () => {
   return (
     <div>
       <Layout>
-        <div className="h-[85vh] w-screen flex gap-2 p-3">
+        <div className="h-[85vh] w-screen flex gap-4 p-3">
           {/* Left section for filters */}
-          <div className="w-1/6 border px-3 py-2 border-black rounded-lg">
+          <div className="w-1/6  px-3 py-2 border border-gray-300 rounded-lg bg-white shadow-lg">
             <div className="flex flex-col w-full h-full justify-between">
               <div className="flex flex-col items-start gap-2 w-full">
                 <div className="text-lg font-semibold w-full">Filters</div>
                 <CategoryFilter onCategoryChange={setCategory} reset={resetAll} />
                 <PriceFilter onFilterChange={setPriceRange} reset={resetAll} />
-                <button className="px-3 py-1 bg-black text-white rounded-xl" onClick={handleReset}>Reset</button>
+                <button className="px-3 py-1 bg-black text-white rounded-lg" onClick={handleReset}>Reset</button>
               </div>
               <div className="flex justify-between w-full">
                 <button
@@ -154,7 +154,7 @@ const Home = () => {
           </div>
 
           {/* Right section for products */}
-          <div className="w-5/6 border p-3 border-black rounded-lg">
+          <div className="w-5/6 border p-3 border-gray-300 rounded-lg bg-white shadow-lg">
             {
               loading ? (
                 <p>Loading...</p>

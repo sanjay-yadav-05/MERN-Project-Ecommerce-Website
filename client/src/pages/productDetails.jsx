@@ -56,9 +56,9 @@ const ProductDetails = () => {
             } else {
                 // Add product to cart with only required fields
                 const { _id, name, description, price, quantity } = product;
-                setCart([...cart, { _id, name, description, price, quantity:1 }]);
+                setCart([ { _id, name, description, price, quantity:1 }, ...cart]);
                 toast.success(`${product.name} is added to cart`);
-                localStorage.setItem("cart", JSON.stringify([...cart, { _id, name, description, price, quantity:1 }]))
+                localStorage.setItem("cart", JSON.stringify([{ _id, name, description, price, quantity:1 },...cart]))
                 // localStorage.setItem("cart", JSON.stringify([...cart, product]))
                 
             }

@@ -32,7 +32,7 @@ const Header = () => {
     const c = localStorage.getItem("cart");
     const parsedCart = c ? JSON.parse(c) : []; // Parse the cart data or set it as an empty array if null
     
-    axios.post(`http://localhost:8080/api/v1/auth/store-cart/${auth.user.id}`, parsedCart)
+    axios.post(`http://localhost:8080/api/v1/auth/store-cart/${auth.user._id}`, parsedCart)
         .then((response) => {
             console.log("Cart data successfully stored:", response.data);
         })

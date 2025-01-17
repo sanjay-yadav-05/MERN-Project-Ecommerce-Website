@@ -120,12 +120,12 @@ const CreateCategory = () => {
 
     return (
         <Layout>
-            <div className="px-4 py-3 h-full flex gap-2">
+            <div className="px-4 py-3 h-full flex gap-4">
                 {/* Left section */}
                 <AdminMenu />
 
                 {/* Right section */}
-                <div className="w-5/6 border-2 p-4 box-border border-black flex flex-col gap-3">
+                <div className="w-4/5 border-2 p-4 box-border border-gray-300 rounded-lg bg-white flex flex-col gap-3">
                     <h1 className="text-4xl flex justify-center font-bold">Manage Categories</h1>
 
                     {/* Add Category Form */}

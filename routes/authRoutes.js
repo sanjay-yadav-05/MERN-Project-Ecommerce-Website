@@ -1,10 +1,11 @@
 import express from 'express'
-import { registerController, loginController,insertCart, testController, forgetPassword, resetPassword, verifyHint } from '../controllers/authController.js'
+import { registerController, loginController,insertCart, testController, forgetPassword, resetPassword, verifyHint, updateProfile } from '../controllers/authController.js'
 import { requireSignIn, isAdmin } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
 router.post('/register', registerController);
+router.post('/update-profile/:id',requireSignIn, updateProfile);
 router.post('/login', loginController);
 router.post('/forgot-password', forgetPassword);
 router.post('/verify-hint', verifyHint);

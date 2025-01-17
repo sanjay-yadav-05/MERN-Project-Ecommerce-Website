@@ -151,7 +151,7 @@ export const loginController = async (req, res) => {
             success: true,
             message: 'User logged in successfully',
             user: {
-                id: user._id,
+                _id: user._id,
                 name: user.name,
                 email: user.email,
                 phone: user.phone,
@@ -256,14 +256,6 @@ export const insertCart = async (req, res) => {
         const id = req.params.id; 
         const cart = req.body;   
 
-        // Validate the input
-        // if (!cart || !Array.isArray(cart) || cart.length === 0) {
-        //     return res.status(400).send({
-        //         success: false,
-        //         message: "Invalid cart data",
-        //     });
-        // }
-
         // Example: Saving the cart to the database (using MongoDB)
         const user = await Users.findById(id); // Replace `UserModel` with your actual user model
         if (!user) {
@@ -287,6 +279,40 @@ export const insertCart = async (req, res) => {
         res.status(500).send({
             success: false,
             message: "Error inserting cart",
+            error,
+        });
+    }
+};
+export const updateProfile = async (req, res) => {
+    try {
+        const id = req.params.id; 
+        const {name, email, phone, address} = req.body;   
+
+        // Example: Saving the cart to the database (using MongoDB)
+        const user = await Users.findById(id); // Replace `UserModel` with your actual user model
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        user.name = name; 
+        user.email = email; 
+        user.phone = phone; 
+        user.address = address; 
+        await user.save();
+
+        res.status(200).send({
+            success: true,
+            message: "Profile is Updated successfully",
+            user: user
+        });
+    } catch (error) {
+        console.error("Error in Updating Profile:", error);
+        res.status(500).send({
+            success: false,
+            message: "Error in Updating Profile",
             error,
         });
     }
