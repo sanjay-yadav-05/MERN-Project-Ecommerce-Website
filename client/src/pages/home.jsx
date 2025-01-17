@@ -111,7 +111,8 @@ const Home = () => {
         const { _id, name, description, price, quantity } = product;
         setCart([...cart, { _id, name, description, price, quantity:1 }]);
         toast.success(`${product.name} is added to cart`);
-        localStorage.setItem("cart", JSON.stringify([...cart, product]))
+        localStorage.setItem("cart", JSON.stringify([...cart, { _id, name, description, price, quantity:1 }]))
+        // localStorage.setItem("cart", JSON.stringify([...cart, product]))
       }
     }else{
       toast.error("Please login to add product to cart");

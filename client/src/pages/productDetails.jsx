@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/cartContext';
 import { toast } from 'react-toastify';
+import { useAuth } from '../context/authContext';
 
 const ProductDetails = () => {
     const [product, setProduct] = useState(null);
@@ -12,6 +13,7 @@ const ProductDetails = () => {
     const params = useParams();
     const navigate = useNavigate();
     const { cart, setCart } = useCart();
+    const {auth , setAuth} = useAuth();
 
     useEffect(() => {
         if (params?.slug) getProduct();
@@ -56,7 +58,8 @@ const ProductDetails = () => {
                 const { _id, name, description, price, quantity } = product;
                 setCart([...cart, { _id, name, description, price, quantity:1 }]);
                 toast.success(`${product.name} is added to cart`);
-                localStorage.setItem("cart", JSON.stringify([...cart, product]))
+                localStorage.setItem("cart", JSON.stringify([...cart, { _id, name, description, price, quantity:1 }]))
+                // localStorage.setItem("cart", JSON.stringify([...cart, product]))
                 
             }
         }else{
