@@ -44,18 +44,23 @@ const ProductDetails = () => {
     };
 
     const handleAddToCart = (product) => {
-        // Check if the product is already in the cart
-        const isProductInCart = cart.some(item => item._id === product._id);
+        if(auth?.user != null){
 
-        if (isProductInCart) {
-            toast.error("This product is already in your cart.");
-        } else {
-            // Add product to cart with only required fields
-            const { _id, name, description, price, quantity } = product;
-            setCart([...cart, { _id, name, description, price, quantity:1 }]);
-            toast.success(`${product.name} is added to cart`);
-            localStorage.setItem("cart", JSON.stringify([...cart, product]))
-
+            // Check if the product is already in the cart
+            const isProductInCart = cart.some(item => item._id === product._id);
+            
+            if (isProductInCart) {
+                toast.error("This product is already in your cart.");
+            } else {
+                // Add product to cart with only required fields
+                const { _id, name, description, price, quantity } = product;
+                setCart([...cart, { _id, name, description, price, quantity:1 }]);
+                toast.success(`${product.name} is added to cart`);
+                localStorage.setItem("cart", JSON.stringify([...cart, product]))
+                
+            }
+        }else{
+            toast.error("Please login to add product to cart");
         }
     };
 
