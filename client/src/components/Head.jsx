@@ -7,26 +7,42 @@ import { useAuth } from '../context/authContext';
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import SearchbarATHome from './searchbarATHome';
+import { useCart } from '../context/cartContext';
+import {Badge} from 'antd';
+import axios from 'axios';
 // import { useToast } from '../context/toastContext';
 
 const Header = () => {
   // const { showToast } = useToast();
   const [menuOpen, setMenuOpen] = useState(false);
   const { auth, setAuth } = useAuth();
+  const { cart, setCart } = useCart();
 
   const navigate = useNavigate();
   const location = useLocation(); // Get the current path
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const closeMenu = () => setMenuOpen(false);
   const navLinkaccStyles = ({ isActive }) =>
-    isActive ? 'text-gray-400' : 'hover:text-gray-400';
+    isActive ? 'text-gray-400 font-mono' : 'hover:text-gray-400 font-mono';
   const navLinkStyles = ({ isActive }) =>
-    isActive ? 'h-3/6 items-center flex border-b-2 border-gray-400 z-50 ' : 'h-3/6 items-center flex border-b-2  border-black z-50';
+    isActive ? 'h-full items-center text-white text-lg flex border-b-2 font-mono border-gray-400 z-50 ' : 'h-full text-lg font-mono text-white items-center flex border-b-2  border-black z-50';
   const handleLogout = () => {
     toast.success("Loged out successfully");
+    // inserting cart
+    const c = localStorage.getItem("cart");
+    const parsedCart = c ? JSON.parse(c) : []; // Parse the cart data or set it as an empty array if null
+    
+    axios.post(`http://localhost:8080/api/v1/auth/store-cart/${auth.user.id}`, parsedCart)
+        .then((response) => {
+            console.log("Cart data successfully stored:", response.data);
+        })
+        .catch((error) => {
+            console.error("Error storing cart data:", error);
+        });
     // showToast("Loged out successfully")
     setAuth({ ...auth, user: null, token: "" });
     localStorage.removeItem("auth");
+    localStorage.removeItem("cart");
     navigate("/login")
   }
 
@@ -44,7 +60,7 @@ const Header = () => {
 
 
   return (
-    <header className="fixed top-0 w-full bg-black text-white   shadow-gray-500  md:shadow-gray-500 z-10">
+    <header className="fixed top-0 w-full  bg-black text-white   shadow-gray-500  md:shadow-gray-500 z-10">
       {/* Desktop Navigation */}
       <div className="hidden md:flex justify-between items-center h-[8vh] px-6">
         <NavLink to="/" className="text-4xl w-[32%] font-mono">BrandName</NavLink>
@@ -68,14 +84,14 @@ const Header = () => {
               <div className='flex gap-4 items-center justify-end z-50  bg-black h-full '>
               <div onClick={toggleDropdown} className="border-l-2 cursor-pointer border-gray-700 px-1 flex items-center justify-center gap-2" >
                 <img className="h-9 invert " src={ProfileIcon} alt="Profile" />
-                <div className='text-xl font-mono'>{auth.user.name}</div>
+                <div className='text-lg font-mono'>{auth.user.name}</div>
               </div>
-             {auth?.user?.role == 0 && <NavLink to="/dashboard/user/cart" className={navLinkStyles}>
-                Cart(0)
-              </NavLink>}
+             {auth?.user?.role == 0 && <Badge count={cart?.length} showZero className='h-3/6  flex items-center justify-center'><NavLink to="/dashboard/user/cart" className={navLinkStyles}>
+                cart
+              </NavLink></Badge>}
             </div>
           </div>
-        ) : (<div className="flex gap-4 w-2/5 justify-end ">
+        ) : (<div className="flex gap-4 w-[32%] justify-end ">
           <NavLink to="/login" state={{ from: location.pathname }} className={navLinkaccStyles}>Login</NavLink>
           <NavLink to="/register" state={{ from: location.pathname }} className={navLinkaccStyles}>Sign Up</NavLink>
         </div>)}

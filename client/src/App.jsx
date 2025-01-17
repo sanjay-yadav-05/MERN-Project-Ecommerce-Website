@@ -19,6 +19,7 @@ import AllUsersInfo from './pages/admin/allUsersInfo';
 import Cart from './pages/users/cart';
 import AllOrders from './pages/users/allOrders';
 import ProductDetails from './pages/productDetails.jsx';
+// import Cart from './pages/cart';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
       <Route path="/" element={<Home />} />
       <Route path="/product/:slug" element={<ProductDetails/>} />
       <Route path="/login" element={<Login />} />
+      {/* <Route path="/cart" element={<Cart />} /> */}
       <Route path="/forgetPassword" element={<ForgetPassword />} />
       <Route path="/register" element={<Singup />} />
       <Route path="/dashboard" element={<PrivateRoute />} >

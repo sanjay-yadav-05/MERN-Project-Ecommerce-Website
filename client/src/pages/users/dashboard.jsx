@@ -14,7 +14,7 @@ const dashboard = () => {
                     <div className='w-3/5 h-1/2 border-2 border-black flex flex-col gap-2 box-border'>
 
                     <div className=' h-1/4 w-full flex justify-center bg-black text-white items-center rounded-b-[25%]'>
-                        Hey wekcom back to your work
+                        Hey welcome back 
                     </div>
                     <div className='h-3/4 w-11/12 mx-auto'>
                     

@@ -8,10 +8,12 @@ import { useAuth } from "../../context/authContext.jsx";
 import Facebook from "../../assets/svg/Facebook.svg";
 import Google from "../../assets/svg/google.svg";
 import Insta from "../../assets/svg/insta.svg";
+import { useCart } from "../../context/cartContext";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm();
   const { auth, setAuth } = useAuth();
+  const { cart, setCart } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
   const gotoLastSite = location.state?.from?.endsWith('login') || location.state?.from?.endsWith('register')
@@ -26,7 +28,9 @@ const Login = () => {
         toast.success(`${res.data.user.name} logged in successfully`);
         const updatedAuth = { ...auth, user: res.data.user, token: res.data.token };
         setAuth(updatedAuth);
+        setCart(updatedAuth.user.cart);
         localStorage.setItem("auth", JSON.stringify(updatedAuth));
+        localStorage.setItem("cart", JSON.stringify(updatedAuth.user.cart));
         setTimeout(() => navigate(gotoLastSite), 1000);
         reset();
       } else {

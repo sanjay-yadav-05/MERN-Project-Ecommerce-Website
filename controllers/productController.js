@@ -253,7 +253,14 @@ export const searchProductController = async (req, res) => {
                 { description: { $regex: keyword, $options: "i" } },
             ],
         }).select("-image").populate("category");
-        
+
+        if(result.length < 1){
+            return res.status(404).send({
+                success: false,
+                message: "No product found",
+                });
+        }
+
         res.status(200).send({
             success: true,
             message: "Products fetched successfully",
@@ -271,7 +278,7 @@ export const searchProductController = async (req, res) => {
 
 
 
-export const getSimilarProduct = async(req,res)=>{
+export const getSimilarProduct = async (req, res) => {
     const { categoryId } = req.params;
     const { exclude } = req.query; // The product ID to exclude
 
@@ -281,8 +288,59 @@ export const getSimilarProduct = async(req,res)=>{
             _id: { $ne: exclude }, // Exclude the current product
         });
 
-        res.status(200).json({ products });
+        res.status(200).send({
+            success: true,
+            message: "Similar products fetched successfully",
+            products
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching similar products', error });
+        res.status(500).send({
+            success: false,
+            message: 'Error fetching similar products',
+            error
+        });
     }
 };
+
+
+export const getProductCounts = async (req, res) => {
+    try {
+
+        const counts = await productModel.countDocuments();
+        res.status(200).send({
+            success: true,
+            message: 'Product counts fetched successfully',
+            counts
+        });
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Error in getting product counts",
+            error,
+        })
+    }
+}
+export const productListController = async (req, res) => {
+    try {
+        const perPage = 10;
+        const page = req.params.page ? parseInt(req.params.page) : 1;
+        const products = await productModel.find({}).select("-image").skip((page - 1) * perPage).limit(perPage).sort({ createdAt: -1 });
+        res.status(200).send({
+            success: true,
+            message: 'Product counts fetched successfully',
+            products
+        });
+
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: "Error in getting product counts",
+            error,
+        })
+    }
+}

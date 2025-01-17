@@ -5,20 +5,23 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/authContext'
 import { SearchProvider } from './context/sreachContext'
-import { ToastProvider } from './context/toastContext';
+import { CartProvider } from './context/cartContext.jsx'
+// import { ToastProvider } from './context/toastContext';
+
 
 createRoot(document.getElementById('root')).render(
   // <ToastProvider>
 
-    <AuthProvider>
-      <SearchProvider>
-
+  <AuthProvider>
+      <CartProvider>
+    <SearchProvider>
         <BrowserRouter>
           {/* <StrictMode> */}
           <App />
           {/* </StrictMode> */}
         </BrowserRouter>
-      </SearchProvider>
-    </AuthProvider>
+    </SearchProvider>
+      </CartProvider>
+  </AuthProvider>
   // </ToastProvider>
 )

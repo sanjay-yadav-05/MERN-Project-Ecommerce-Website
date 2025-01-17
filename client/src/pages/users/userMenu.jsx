@@ -1,9 +1,11 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useAuth } from '../../context/authContext';
+import { useCart } from '../../context/cartContext';
 
 const userMenu = () => {
     const { auth } = useAuth()
+    const {cart, setCart} = useCart();
     const navLinkStyles = ({ isActive }) =>
         isActive ? 'border-y-2 py-2 w-full text-center border-black bg-black text-white' : 'border-y-2 py-2 w-full text-center border-black';
     return (
@@ -14,7 +16,7 @@ const userMenu = () => {
             <div className='flex flex-col gap-2  w-full items-center'>
                 <NavLink className={navLinkStyles} to="/dashboard/user/profile">Profile</NavLink>
                 <NavLink className={navLinkStyles} to="/dashboard/user/all-orders">All-Orders</NavLink>
-                <NavLink className={navLinkStyles} to="/dashboard/user/cart">Cart(0)</NavLink>
+                <NavLink className={navLinkStyles} to="/dashboard/user/cart">Cart({cart.length})</NavLink>
             </div>
         </div>
     )

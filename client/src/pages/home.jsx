@@ -7,8 +7,10 @@ import PriceFilter from '../components/priceFilter.jsx';
 import { toast } from "react-toastify";
 import { useSearch } from '../context/sreachContext.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/cartContext.jsx';
 const Home = () => {
   const { auth, setAuth } = useAuth();
+  const { cart, setCart } = useCart();
   const { search, setSearch } = useSearch(); // Access and reset the search result
   const [products, setProducts] = useState([]); // All products
   const [category, setCategory] = useState(null); // Selected category
@@ -16,11 +18,12 @@ const Home = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const [priceRange, setPriceRange] = useState(null); // Selected price range
   const [resetAll, setReSetAll] = useState(false); // Reset trigger state
-  const navigate =useNavigate();
+  const [totalProduct, setTotalProduct] = useState(0);
+  const navigate = useNavigate();
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1); // Current page
-  const [itemsPerPage] = useState(30); // Number of items per page
+  const [itemsPerPage] = useState(10); // Number of items per page
 
   // Fetch products from the server
   const getAllproducts = async () => {
@@ -37,8 +40,14 @@ const Home = () => {
     }
   };
 
+  const getTotal = async () => {
+    const { data } = await axios("http://localhost:8080/api/v1/product/product-count");
+    setTotalProduct(data?.counts);
+  }
+
   useEffect(() => {
     getAllproducts(); // Fetch products when component mounts
+    getTotal();
   }, []);
 
   // Function to handle filtering based on search, category, and price
@@ -49,7 +58,7 @@ const Home = () => {
     if (search.result.length > 0) {
       filtered = search.result;
     }
-    
+
 
     // Apply price filter if price range is set
     if (priceRange) {
@@ -88,6 +97,22 @@ const Home = () => {
     setFilteredProducts(products); // Show all products
     document.getElementById("searchInput").value = ""; // Clear search input
   };
+
+  const handleAddToCart = (product) => {
+    // Check if the product is already in the cart
+    const isProductInCart = cart.some(item => item._id === product._id);
+
+    if (isProductInCart) {
+        toast.error("This product is already in your cart.");
+    } else {
+        // Add product to cart with only required fields
+        const { _id, name, description, price, quantity } = product;
+        setCart([...cart, { _id, name, description, price, quantity:1 }]);
+        toast.success(`${product.name} is added to cart`);
+        localStorage.setItem("cart", JSON.stringify([...cart, product]))
+    }
+};
+
 
   return (
     <div>
@@ -165,33 +190,42 @@ const Home = () => {
                               <span> {`₹${product.price}`} </span>
                             </div>
                             <div>
-                              <span>Quantity:</span>
+                              <span>Avl. Qty:</span>
                               <span>{` ${product.quantity}`}</span>
                             </div>
                           </div>
 
                           {/* Action Buttons */}
                           <div className="flex justify-between">
-                            <button onClick={()=> navigate(`/product/${product.slug}`)} className="text-sm bg-slate-400 text-white py-1 px-2 rounded-md font-semibold">
+                            <button onClick={() => navigate(`/product/${product.slug}`)} className="text-sm bg-slate-400 text-white py-1 px-2 rounded-md font-semibold">
                               More Info
                             </button>
-                            <button className="text-sm bg-slate-500 text-white py-1 px-2 rounded-md font-semibold">
+                            <button
+                            onClick={()=>handleAddToCart(product)}
+                              // onClick={() => {
+                              //   const { _id, name, description, price, quantity } = product; // Destructure only the required fields
+                              //   setCart([...cart, { _id, name, description, price, quantity }]);
+                              //   localStorage.setItem("cart", JSON.stringify([...cart, product]))
+                              //   toast.success(`${product.name} is added to cart`);
+                              // }} 
+                              className="text-sm bg-slate-500 text-white py-1 px-2 rounded-md font-semibold">
                               Add to Cart
                             </button>
                           </div>
+                          {/* {totalProduct} */}
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-500 text-center w-full">No products found.</p>
+                    <p className="text-gray-500 flex items-center justify-center  h-full text-3xl w-full">No products found.</p>
                   )}
                 </div>
               )
             }
           </div>
         </div>
-      </Layout>
-    </div>
+      </Layout >
+    </div >
   );
 };
 

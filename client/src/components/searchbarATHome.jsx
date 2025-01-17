@@ -123,6 +123,7 @@
 import React, { useEffect } from 'react';
 import { useSearch } from '../context/sreachContext';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const SearchbarATHome = () => {
     const { search, setSearch } = useSearch();
@@ -134,7 +135,7 @@ const SearchbarATHome = () => {
             setSearch({ keyword: '', result: data.products }); // Reset search state with all products
         } catch (error) {
             console.error('Error fetching all products:', error);
-            alert('Failed to fetch products. Please try again later.');
+            toast.error('Failed to fetch products. Please try again later.');
         }
     };
 
@@ -148,8 +149,17 @@ const SearchbarATHome = () => {
                 const { data } = await axios.get(`http://localhost:8080/api/v1/product/search/${search.keyword}`);
                 setSearch({ ...search, result: data.data }); // Update search context with search results
             } catch (error) {
-                console.error('Error fetching search results:', error);
-                alert('Failed to fetch search results. Please try again later.');
+                if (error.response) {
+                    // Display the error message from the backend
+                    toast.error(error.response.data.message || "An error occurred");
+                  } else if (error.request) {
+                    // Request was made but no response was received
+                    toast.error("No response from server. Please try again later.");
+                  } else {
+                    // Something else went wrong
+                    toast.error("Something went wrong");
+                  }
+                  console.error(error.message);
             }
         }
     };

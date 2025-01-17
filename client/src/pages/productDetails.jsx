@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Layout from '../components/layout';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useCart } from '../context/cartContext';
+import { toast } from 'react-toastify';
 
 const ProductDetails = () => {
     const [product, setProduct] = useState(null);
@@ -9,6 +11,7 @@ const ProductDetails = () => {
     const [loading, setLoading] = useState(true);
     const params = useParams();
     const navigate = useNavigate();
+    const { cart, setCart } = useCart();
 
     useEffect(() => {
         if (params?.slug) getProduct();
@@ -40,26 +43,42 @@ const ProductDetails = () => {
         }
     };
 
+    const handleAddToCart = (product) => {
+        // Check if the product is already in the cart
+        const isProductInCart = cart.some(item => item._id === product._id);
+
+        if (isProductInCart) {
+            toast.error("This product is already in your cart.");
+        } else {
+            // Add product to cart with only required fields
+            const { _id, name, description, price, quantity } = product;
+            setCart([...cart, { _id, name, description, price, quantity:1 }]);
+            toast.success(`${product.name} is added to cart`);
+            localStorage.setItem("cart", JSON.stringify([...cart, product]))
+
+        }
+    };
 
     return (
         <Layout>
-            <div className="w-full h-full px-8 py-5 container flex gap-2 bg-gray-50">
+            <div className="w-full h-auto min-h[100%] px-8 py-5 container flex gap-2 bg-gray-300">
                 <div className="w-4/6 h-full px-4">
                     {loading ? (
                         <p className="text-center text-gray-600 text-lg">Loading...</p>
                     ) : product ? (
                         <div className="bg-white w-full h-full flex-col items-center shadow-lg rounded-lg px-6 justify-evenly py-2 flex">
-                            <h1 className="text-4xl h-[15%] font-serif text-center flex items-center font-semibold text-gray-800">{product.name}</h1>
-                            <div className='w-full flex h-[85%]  items-center gap-3'>
+                            <h1 className="text-4xl h-[6vh] font-serif text-center flex items-end font-semibold text-gray-800">Product Details</h1>
+                            <div className='w-full flex h-[65vh]  items-center gap-3'>
                                 <div className="w-1/2   h-5/6  rounded-xl flex items-center overflow-hidden">
                                     <img
                                         src={`http://localhost:8080/api/v1/product/get-product-image/${product._id}`}
                                         alt="Product Image"
-                                        className="w-full h-[110%]  object-contain rounded-lg"
+                                        className="w-full   object-contain rounded-lg"
                                     />
                                 </div>
                                 <div className="flex w-1/2  flex-col gap-16 justify-between">
                                     <div className='flex w-full h-1/2 flex-col justify-center gap-1'>
+                                        <p className="text-gray-800 font-semibold font-serif text-3xl">{product.name}</p>
                                         <p className="text-gray-600 text-lg">{product.description}</p>
                                         <p className="text-gray-500 text-md">
                                             Category: <span className="text-gray-800 font-medium">{product.category.name}</span>
@@ -76,12 +95,20 @@ const ProductDetails = () => {
                                         </div>
                                         <div className='flex justify-between items-center gap-4'>
 
-                                        <button className="mt-2 w-1/2 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition">
-                                            Book Now
-                                        </button>
-                                        <button className="mt-2 w-1/2 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition">
-                                            Add to Cart
-                                        </button>
+                                            <button className="mt-2 w-1/2 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition">
+                                                Book Now
+                                            </button>
+                                            <button
+                                                onClick={() => handleAddToCart(product)}
+                                                // onClick={() => {
+                                                //     const { _id, name, description, price, quantity } = product; // Destructure only the required fields
+                                                //     setCart([...cart, { _id, name, description, price, quantity }]);
+                                                //     localStorage.setItem("cart", JSON.stringify([...cart, product]))
+                                                //     toast.success(`${product.name} is added to cart`);
+                                                // }}
+                                                className="mt-2 w-1/2 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition" >
+                                                Add to Cart
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -91,11 +118,11 @@ const ProductDetails = () => {
                         <p className="text-center text-gray-600 text-lg">Product not found.</p>
                     )}
                 </div>
-                <div className="w-2/6 border h-full overflow-auto flex flex-col rounded-lg bg-white px-2">
+                <div className="w-2/6 border h-full overflow-auto flex flex-col rounded-lg bg-white pb-2 px-2">
                     <div className="text-xl font-semibold py-2.5 sticky top-0 bg-white">Similar Products</div>
                     {similarProducts.length > 0 ? (
                         similarProducts.map((product) => (
-                            <div key={product._id} className="w-full mb-4 p-2 border justify-between rounded-lg flex items-center gap-4">
+                            <div key={product._id} className="w-full mb-2 p-2 border justify-between rounded-lg flex items-center gap-4">
                                 <div className="flex gap-4 items-center">
                                     <img
                                         src={`http://localhost:8080/api/v1/product/get-product-image/${product._id}`}
@@ -120,7 +147,7 @@ const ProductDetails = () => {
                     )}
                 </div>
             </div>
-        </Layout>
+        </Layout >
     );
 };
 
