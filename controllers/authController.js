@@ -59,54 +59,6 @@ export const registerController = async (req, res) => {
     }
 };
 
-// export const loginController = async (req, res) => {
-//     try {
-//         const { email, password } = req.body;
-//         if (!email || !password) {
-//             return res.send({ message: 'Put valid email or password' })
-//         }
-
-//         const user = await Users.findOne({ email })
-    
-        
-//         if (!user) {
-//             return res.status(404).send({
-//                 success: false,
-//                 message: 'User not found'
-//             })
-//         }
-//         const isValidPassword = await comparePassword(password, user.password);
-//         if (!isValidPassword) {
-//             return res.status(401).send({
-//                 success: false,
-//                 message: 'Invalid password'
-//             })
-//         }
-//         const token = await Jwt.sign({ _id: user._id }, process.env.jwt_key, { expiresIn: '1d' });
-//         res.status(200).send({
-//             success: true,
-//             message: 'User logged in successfully',
-//             user: {
-//                 id:user._id,
-//                 name: user.name,
-//                 email: user.email,
-//                 phone: user.phone,
-//                 address: user.address,
-//                 role: user.role,
-//                 // cart : user.cart 
-//             },
-//             token
-//         })
-//     } catch (error) {
-//         console.log(error);
-//         res.status(500).send({
-//             success: false,
-//             message: 'Error in Login',
-//             error
-//         })
-//     }
-// }
-
 
 export const loginController = async (req, res) => {
     try {
@@ -317,3 +269,36 @@ export const updateProfile = async (req, res) => {
         });
     }
 };
+
+
+export const updateAddress = async(req,res)=>{
+    try {
+        const id = req.params.id; 
+        const {address} = req.body;   
+
+        // Example: Saving the cart to the database (using MongoDB)
+        const user = await Users.findById(id); // Replace `UserModel` with your actual user model
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: "User not found",
+            });
+        }
+        
+        user.address = address; 
+        await user.save();
+
+        res.status(200).send({
+            success: true,
+            message: "Profile is Updated successfully",
+            user: user
+        });
+    } catch (error) {
+        console.error("Error in Updating Profile:", error);
+        res.status(500).send({
+            success: false,
+            message: "Error in Updating Profile",
+            error,
+        });
+    }
+}
