@@ -41,8 +41,10 @@ const Header = () => {
         });
     // showToast("Loged out successfully")
     setAuth({ ...auth, user: null, token: "" });
+    setCart([]);
     localStorage.removeItem("auth");
     localStorage.removeItem("cart");
+    localStorage.clear();
     navigate("/login")
   }
 
@@ -84,9 +86,9 @@ const Header = () => {
               <div className='flex gap-4 items-center justify-end z-50  bg-black h-full '>
               <div onClick={toggleDropdown} className="border-l-2 cursor-pointer border-gray-700 px-1 flex items-center justify-center gap-2" >
                 <img className="h-9 invert " src={ProfileIcon} alt="Profile" />
-                <div className='text-lg font-mono'>{auth.user.name}</div>
+                <div className='text-lg font-mono text-nowrap'>{auth.user.name}</div>
               </div>
-             {auth?.user?.role == 0 && <Badge count={cart?.length} showZero className='h-3/6  flex items-center justify-center'><NavLink to="/dashboard/user/cart" className={navLinkStyles}>
+              {auth?.user?.role == 0 && <Badge count={cart?.length} showZero className='h-3/6  flex items-center justify-center'><NavLink to="/dashboard/user/cart" className={navLinkStyles}>
                 cart
               </NavLink></Badge>}
             </div>

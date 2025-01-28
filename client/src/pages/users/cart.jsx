@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import Layout from '../../components/layout';
 import UserMenu from './userMenu';
+import PaymentButton from '../../components/PaymentButton';
 import { useAuth } from '../../context/authContext';
 import { useCart } from '../../context/cartContext';
 import { NavLink } from 'react-router-dom';
@@ -186,11 +187,12 @@ const Cart = () => {
                                     <button onClick={openModal} className='text-blue-400 w-auto'>change</button>
                                 </div>
                                 <div className=" flex justify-center">
-                                    <NavLink to="/checkout">
+                                    {/* <NavLink to="/checkout">
                                         <button className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600">
                                             Proceed to Checkout
                                         </button>
-                                    </NavLink>
+                                    </NavLink> */}
+                                    <PaymentButton amount = {calculateTotal()} />
                                 </div>
                             </div>
                         ) : (
@@ -210,7 +212,8 @@ const Cart = () => {
                                     &times;
                                 </button>
                                 {/* Edit Form */}
-                                <form className="flex flex-col gap-4" onSubmit={handleSubmit(changeAddress)}>
+                                <form className="flex flex-col gap-3" onSubmit={handleSubmit(changeAddress)}>
+                                        <div className='w-full text-center font-semibold text-lg'>Edit Address</div>
                                     <div>
                                         <input
                                             type="text"

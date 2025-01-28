@@ -550,7 +550,7 @@ const CreateProduct = () => {
                     {/* Product Table */}
                     <div className="overflow-auto border-2 border-gray-300 border-collapse">
                         {loading ? (
-                            <div>Loading categories...</div>
+                            <div>Loading products...</div>
                         ) : (
                             <table className="w-full border-collapse  border h-full border-gray-800">
                                 <thead className="sticky top-0 bg-white w-full">

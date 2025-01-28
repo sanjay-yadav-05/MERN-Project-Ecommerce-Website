@@ -5,7 +5,7 @@ import Jwt from 'jsonwebtoken';
 
 export const registerController = async (req, res) => {
     try {
-        const { name, phone, email, password,setHint, hint, address } = req.body;
+        const { name, phone, email, password, setHint, hint, address } = req.body;
         if (!name) {
             return res.send({ message: 'Name is required' })
         }
@@ -36,7 +36,7 @@ export const registerController = async (req, res) => {
             })
         }
         const hashedPassword = await hashPassword(password);
-        const user = new Users({ name, phone, email, password: hashedPassword,setHint,hint, address  });
+        const user = new Users({ name, phone, email, password: hashedPassword, setHint, hint, address });
         await user.save();
 
         const userForToken = await Users.findOne({ email });
@@ -205,8 +205,8 @@ export const testController = (req, res) => {
 
 export const insertCart = async (req, res) => {
     try {
-        const id = req.params.id; 
-        const cart = req.body;   
+        const id = req.params.id;
+        const cart = req.body;
 
         // Example: Saving the cart to the database (using MongoDB)
         const user = await Users.findById(id); // Replace `UserModel` with your actual user model
@@ -216,7 +216,7 @@ export const insertCart = async (req, res) => {
                 message: "User not found",
             });
         }
-
+        console.log(cart)
         // Assuming `cart` is a field in your user schema
         user.cart = cart; // Replace `cart` with the appropriate field name
         await user.save();
@@ -235,10 +235,13 @@ export const insertCart = async (req, res) => {
         });
     }
 };
+
+
+
 export const updateProfile = async (req, res) => {
     try {
-        const id = req.params.id; 
-        const {name, email, phone, address} = req.body;   
+        const id = req.params.id;
+        const { name, email, phone, address } = req.body;
 
         // Example: Saving the cart to the database (using MongoDB)
         const user = await Users.findById(id); // Replace `UserModel` with your actual user model
@@ -249,10 +252,10 @@ export const updateProfile = async (req, res) => {
             });
         }
 
-        user.name = name; 
-        user.email = email; 
-        user.phone = phone; 
-        user.address = address; 
+        user.name = name;
+        user.email = email;
+        user.phone = phone;
+        user.address = address;
         await user.save();
 
         res.status(200).send({
@@ -271,10 +274,10 @@ export const updateProfile = async (req, res) => {
 };
 
 
-export const updateAddress = async(req,res)=>{
+export const updateAddress = async (req, res) => {
     try {
-        const id = req.params.id; 
-        const {address} = req.body;   
+        const id = req.params.id;
+        const { address } = req.body;
 
         // Example: Saving the cart to the database (using MongoDB)
         const user = await Users.findById(id); // Replace `UserModel` with your actual user model
@@ -284,8 +287,8 @@ export const updateAddress = async(req,res)=>{
                 message: "User not found",
             });
         }
-        
-        user.address = address; 
+
+        user.address = address;
         await user.save();
 
         res.status(200).send({
@@ -302,3 +305,47 @@ export const updateAddress = async(req,res)=>{
         });
     }
 }
+
+
+
+
+
+
+export const fetchOrders = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await Users.findById(id).select("allOrders").populate("allOrders._id").sort({ createdAt: -1 });
+
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: "User not found",
+            });
+        }
+        const orders = user.allOrders || [];
+        // console.log(orders)
+        const fetchorder = [];
+        orders.forEach(order => {
+            let forder = {};
+            forder._id = order._id._id;
+            forder.products = order._id.products;
+            forder.status = order._id.status;
+            forder.razorpay_order_id = order._id.payment.razorpay_order_id
+            fetchorder.push(forder)
+            // order.razorpay_order_id = order.payment.razorpay_order_id;
+        });
+
+        res.status(200).send({
+            success: true,
+            message: "Orders fetched successfully",
+            fetchorder,
+        });
+    } catch (error) {
+        console.error("Error in Fetching Orders:", error);
+        res.status(500).send({
+            success: false,
+            message: "Error in Fetching Orders",
+            error: error.message,
+        });
+    }
+};

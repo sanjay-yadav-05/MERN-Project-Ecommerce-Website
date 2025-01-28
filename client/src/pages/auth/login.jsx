@@ -36,6 +36,7 @@ const Login = () => {
       } else {
         // Handle backend failure messages
         toast.error(res.data.message);
+        
       }
     } catch (error) {
       // Check if the error has a response (indicates server responded with a status code)

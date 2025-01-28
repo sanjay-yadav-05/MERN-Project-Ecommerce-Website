@@ -45,6 +45,16 @@ const userSchema = mongoose.Schema({
         ],
         default: [],
     }
+    ,
+    allOrders:{
+        type: [
+            {
+                _id: { type: mongoose.Schema.Types.ObjectId, ref: 'orders' }
+                //, quantity: { type: Number, required: true },
+            }
+        ],
+        default: [],
+    }
 
 }, { timestamps: true });
 

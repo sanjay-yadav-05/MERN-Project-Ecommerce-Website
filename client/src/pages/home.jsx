@@ -18,7 +18,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true); // Loading state
   const [priceRange, setPriceRange] = useState(null); // Selected price range
   const [resetAll, setReSetAll] = useState(false); // Reset trigger state
-  const [totalProduct, setTotalProduct] = useState(0);
+  // const [totalProduct, setTotalProduct] = useState(0);
   const navigate = useNavigate();
 
   // Pagination state
@@ -40,14 +40,14 @@ const Home = () => {
     }
   };
 
-  const getTotal = async () => {
-    const { data } = await axios("http://localhost:8080/api/v1/product/product-count");
-    setTotalProduct(data?.counts);
-  }
+  // const getTotal = async () => {
+  //   const { data } = await axios("http://localhost:8080/api/v1/product/product-count");
+  //   setTotalProduct(data?.counts);
+  // }
 
   useEffect(() => {
     getAllproducts(); // Fetch products when component mounts
-    getTotal();
+    // getTotal();
   }, []);
 
   // Function to handle filtering based on search, category, and price
