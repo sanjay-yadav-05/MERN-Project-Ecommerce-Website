@@ -215,13 +215,13 @@ const AllOrders = () => {
 
                 {/* Right Section */}
                 <div className="w-4/5 bg-white border-2 rounded-lg border-gray-300 shadow-lg px-4 py-3 h-full">
-                    <h2 className="text-3xl font-semibold mb-6">All Orders</h2>
+                    <h2 className="text-3xl font-semibold h-[10%]">All Orders</h2>
                     {loading ? (
                         <p className="text-center text-lg text-gray-500">Loading orders...</p>
                     ) : error ? (
                         <p className="text-center text-lg text-red-500">{error}</p>
                     ) : orders.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 overflow-auto h-[90%]">
                             {orders.map((order) => (
                                 <div
                                     key={order._id}
